@@ -55,14 +55,14 @@ pub fn parse(
   argv : Array[String]
 ) -> Unit {
   fn aux {
-    (a, b, spec, help), ((trie : @trie.Trie[Spec]), help_msg) => {
+    ((trie : @trie.Trie[Spec]), help_msg), (a, b, spec, help) => {
       let trie = trie.insert(a, spec).insert(b, spec)
       let help_msg = help_msg + "  \(a)\t\(b)\t" + help + "\n"
       (trie, help_msg)
     }
   }
 
-  let (trie, help_msg) = speclist.fold(aux, (@trie.empty(), usage_msg + "\n options:\n"))
+  let (trie, help_msg) = speclist.fold_left(aux, ~init=(@trie.empty(), usage_msg + "\n options:\n"))
   let help_spec = Spec::Unit(fn() { println(help_msg) })
   let trie = trie.insert("--help", help_spec).insert("-h", help_spec)
   interpret(trie, List::from_array(argv), rest)
@@ -90,7 +90,7 @@ test {
   parse(options, fallback, usage, argv)
   @assertion.assert_eq(verbose.val, false)?
   @assertion.assert_eq(keyword.val, ".mbt")?
-  @assertion.assert_eq(files.len, 2)?
+  @assertion.assert_eq(files.length(), 2)?
   @assertion.assert_eq(files[0], "file1")?
   @assertion.assert_eq(files[1], "file2")?
 }

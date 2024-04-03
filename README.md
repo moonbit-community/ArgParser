@@ -68,12 +68,11 @@ fn main {
 
 output: 
 
-```
- Awesome CLI tool!
- usage: 
-      mytool [options] <file1> [<file2>] ... -o <output>
-
- options:
+```bash
+Awesome CLI tool!
+usage: 
+    mytool [options] \<file1\> [<file2>] ... -o \<output\>
+options:
   --verbose     -v      enable verbose message
   --output      -o      output file name
 ```
