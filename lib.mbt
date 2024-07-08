@@ -8,12 +8,12 @@ pub enum Spec {
 
 fn interpret(
   trie : @trie.Trie[Spec],
-  xs : List[String],
+  xs : Array[String],
   fallback : (String) -> Unit
 ) -> Unit {
-  loop xs {
-    Nil => ()
-    Cons(x, xs) =>
+  loop xs[..] {
+    [] => ()
+    [x, .. as xs] =>
       match trie.lookup(x) {
         None => {
           fallback(x)
@@ -21,15 +21,15 @@ fn interpret(
         }
         Some(spec) =>
           match (spec, xs) {
-            (String(f), Cons(y, ys)) => {
+            (String(f), [y, .. as ys]) => {
               f(y)
               continue ys
             }
-            (Set_string(r), Cons(y, ys)) => {
+            (Set_string(r), [y, .. as ys]) => {
               r.val = y
               continue ys
             }
-            (String(_), Nil) | (Set_string(_), Nil) =>
+            (String(_), []) | (Set_string(_), []) =>
               println("missing argument for \(x)")
             (Set(r), _) => {
               r.val = true
@@ -41,7 +41,7 @@ fn interpret(
             }
             (Unit(f), _) => {
               f()
-              continue xs 
+              continue xs
             }
           }
       }
@@ -62,10 +62,13 @@ pub fn parse(
     }
   }
 
-  let (trie, help_msg) = speclist.fold_left(aux, ~init=(@trie.empty(), usage_msg + "\n options:\n"))
+  let (trie, help_msg) = speclist.fold_left(
+    aux,
+    init=(@trie.empty(), usage_msg + "\n options:\n"),
+  )
   let help_spec = Spec::Unit(fn() { println(help_msg) })
   let trie = trie.insert("--help", help_spec).insert("-h", help_spec)
-  interpret(trie, List::from_array(argv), rest)
+  interpret(trie, argv, rest)
 }
 
 test {
@@ -78,8 +81,7 @@ test {
     #|      mytool [options] <file1> [<file2>] ... -o <output>
     #|
     #|
-
-  let files = @vec.new()
+  let files = []
   let options = [
     ("--no-verbose", "-n", Spec::Clear(verbose), "disable verbose message"),
     ("--search", "-s", Set_string(keyword), "search for files"),
@@ -88,9 +90,9 @@ test {
   let fallback = fn { file => files.push(file) }
   let argv = ["--search", ".mbt", "--delete", "file1", "file2", "-n"]
   parse(options, fallback, usage, argv)
-  @assertion.assert_eq(verbose.val, false)?
-  @assertion.assert_eq(keyword.val, ".mbt")?
-  @assertion.assert_eq(files.length(), 2)?
-  @assertion.assert_eq(files[0], "file1")?
-  @assertion.assert_eq(files[1], "file2")?
+  @test.eq(verbose.val, false)!
+  @test.eq(keyword.val, ".mbt")!
+  @test.eq(files.length(), 2)!
+  @test.eq(files[0], "file1")!
+  @test.eq(files[1], "file2")!
 }
