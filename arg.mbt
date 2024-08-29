@@ -30,7 +30,7 @@ fn interpret(
               continue ys
             }
             (String(_), []) | (Set_string(_), []) =>
-              println("missing argument for \(x)")
+              println("missing argument for \{x}")
             (Set(r), _) => {
               r.val = true
               continue xs
@@ -57,12 +57,12 @@ pub fn parse(
   fn aux {
     ((trie : @trie.T[Spec]), help_msg), (a, b, spec, help) => {
       let trie = trie.insert(a, spec).insert(b, spec)
-      let help_msg = help_msg + "  \(a)\t\(b)\t" + help + "\n"
+      let help_msg = help_msg + "  \{a}\t\{b}\t" + help + "\n"
       (trie, help_msg)
     }
   }
 
-  let (trie, help_msg) = speclist.fold_left(
+  let (trie, help_msg) = speclist.fold(
     aux,
     init=(@trie.empty(), usage_msg + "\n options:\n"),
   )
@@ -70,4 +70,3 @@ pub fn parse(
   let trie = trie.insert("--help", help_spec).insert("-h", help_spec)
   interpret(trie, argv, rest)
 }
-
