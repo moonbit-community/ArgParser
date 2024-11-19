@@ -1,4 +1,4 @@
-pub enum Spec {
+pub(all) enum Spec {
   Unit(() -> Unit)
   String((String) -> Unit)
   Set_string(Ref[String])
@@ -56,7 +56,7 @@ pub fn parse(
 ) -> Unit {
   fn aux {
     ((trie : @trie.T[Spec]), help_msg), (a, b, spec, help) => {
-      let trie = trie.insert(a, spec).insert(b, spec)
+      let trie = trie.add(a, spec).add(b, spec)
       let help_msg = help_msg + "  \{a}\t\{b}\t" + help + "\n"
       (trie, help_msg)
     }
@@ -67,6 +67,6 @@ pub fn parse(
     init=(@trie.empty(), usage_msg + "\n options:\n"),
   )
   let help_spec = Spec::Unit(fn() { println(help_msg) })
-  let trie = trie.insert("--help", help_spec).insert("-h", help_spec)
+  let trie = trie.add("--help", help_spec).add("-h", help_spec)
   interpret(trie, argv, rest)
 }
