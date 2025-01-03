@@ -7,16 +7,16 @@ Command line parser for MoonBit. It use a declarative style to specify command l
 ```moonbit
 fn main {
   let argv = ["-o", "out.mbt", "file1", "file2", "--verbose"]
-  let verbose = @ref.ref(false)
-  let output = @ref.ref("output")
-  let files = @vec.new()
+  let verbose = @ref.new(false)
+  let output = @ref.new("output")
+  let files = []
   let usage =
     #| Awesome CLI tool!
     #| usage: 
     #|      mytool [options] <file1> [<file2>] ... -o <output>
     #|
 
-  parse(
+  @ArgParser.parse(
     [
       ("--verbose", "-v", Set(verbose), "enable verbose message"),
       ("--output", "-o", Set_string(output), "output file name"),
