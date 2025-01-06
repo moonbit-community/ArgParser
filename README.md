@@ -48,13 +48,15 @@ ArgParser will automatically generate `--help` and `-h` options.
 ```moonbit
 fn main {
   let argv = ["--help"]
+  let verbose = @ref.new(false)
+  let output = @ref.new("output")
   let usage =
     #| Awesome CLI tool!
     #| usage: 
     #|      mytool [options] <file1> [<file2>] ... -o <output>
     #|
 
-  parse(
+  @ArgParser.parse(
     [
       ("--verbose", "-v", Set(verbose), "enable verbose message"),
       ("--output", "-o", Set_string(output), "output file name"),
