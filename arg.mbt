@@ -1,14 +1,14 @@
-///| matched option handler that used to interpret options
+///| Matched option handler that used to interpret options.
 /// 
-///  Unit - discard input  
+///  Unit - handle with callback  
 /// 
-///  String - handle associated value 
+///  String - handle associated value with callback
 /// 
 ///  Set_string - set option to associated value 
 /// 
-///  Set - set option to true
+///  Set - set reference to true
 /// 
-///  Clear - set option to false
+///  Clear - set reference to false
 pub(all) enum Spec {
   Unit(() -> Unit)
   String((String) -> Unit)
@@ -60,18 +60,18 @@ fn interpret(
   }
 }
 
-///| parse argument list for CLI tools
+///| Parse argument list for CLI tools
 /// 
-/// @summary match `OptionName` or `LongOptionName` then interpret with `Spec` and 
-/// use `Description` to generate `-h` or `--help` options message
+/// Match `OptionName` or `LongOptionName` then interpret with `Spec` and 
+/// use `Description` to generate `-h` or `--help` options message.
 /// 
-/// @param speclist - (LongOptionName,OptionName, Spec, Description) of Array 
+/// speclist - (LongOptionName, OptionName, Spec, Description) of Array 
 /// 
-/// @param rest - rest arguments handler
+/// rest - rest arguments handler
 /// 
-/// @param usage_msg - synopsis usage  
+/// usage_msg - synopsis usage  
 /// 
-/// @param argv - input argument list 
+/// argv - input argument list 
 /// 
 pub fn parse(
   speclist : Array[(String, String, Spec, String)],
