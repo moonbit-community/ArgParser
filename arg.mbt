@@ -1,3 +1,14 @@
+///| Matched option handler that used to interpret options.
+/// 
+///  Unit - handle with callback  
+/// 
+///  String - handle associated value with callback
+/// 
+///  Set_string - set option to associated value 
+/// 
+///  Set - set reference to true
+/// 
+///  Clear - set reference to false
 pub(all) enum Spec {
   Unit(() -> Unit)
   String((String) -> Unit)
@@ -6,6 +17,7 @@ pub(all) enum Spec {
   Clear(Ref[Bool])
 }
 
+///|
 fn interpret(
   trie : @trie.T[Spec],
   xs : Array[String],
@@ -48,6 +60,19 @@ fn interpret(
   }
 }
 
+///| Parse argument list for CLI tools
+/// 
+/// Match `OptionName` or `LongOptionName` then interpret with `Spec` and 
+/// use `Description` to generate `-h` or `--help` options message.
+/// 
+/// speclist - (LongOptionName, OptionName, Spec, Description) of Array 
+/// 
+/// rest - rest arguments handler
+/// 
+/// usage_msg - synopsis usage  
+/// 
+/// argv - input argument list 
+/// 
 pub fn parse(
   speclist : Array[(String, String, Spec, String)],
   rest : (String) -> Unit,
