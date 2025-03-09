@@ -12,5 +12,6 @@
     "command line",
     "parser"
   ],
-  "description": "command line argument parser"
+  "description": "command line argument parser",
+  "source": "src"
 }
