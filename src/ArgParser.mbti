@@ -1,0 +1,18 @@
+package Yoorkin/ArgParser
+
+// Values
+fn parse(Array[(String, String, Spec, String)], (String) -> Unit, String, Array[String]) -> Unit
+
+// Types and methods
+pub(all) enum Spec {
+  Unit(() -> Unit)
+  String((String) -> Unit)
+  Set_string(Ref[String])
+  Set(Ref[Bool])
+  Clear(Ref[Bool])
+}
+
+// Type aliases
+
+// Traits
+
