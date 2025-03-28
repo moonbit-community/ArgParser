@@ -25,7 +25,7 @@ fn interpret(
 ) -> Unit {
   loop xs[:] {
     [] => ()
-    [x, .. as xs] =>
+    [x, .. xs] =>
       match trie.lookup(x) {
         None => {
           fallback(x)
@@ -33,11 +33,11 @@ fn interpret(
         }
         Some(spec) =>
           match (spec, xs) {
-            (String(f), [y, .. as ys]) => {
+            (String(f), [y, .. ys]) => {
               f(y)
               continue ys
             }
-            (Set_string(r), [y, .. as ys]) => {
+            (Set_string(r), [y, .. ys]) => {
               r.val = y
               continue ys
             }

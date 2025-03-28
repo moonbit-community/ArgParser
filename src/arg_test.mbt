@@ -1,3 +1,4 @@
+///|
 test {
   let verbose : Ref[Bool] = @ref.new(true)
   let keyword : Ref[String] = @ref.new("")
