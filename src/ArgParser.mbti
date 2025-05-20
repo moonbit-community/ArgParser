@@ -1,4 +1,4 @@
-package Yoorkin/ArgParser
+package "Yoorkin/ArgParser"
 
 // Values
 fn parse(Array[(String, String, Spec, String)], (String) -> Unit, String, Array[String]) -> Unit
