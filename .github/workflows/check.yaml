@@ -23,8 +23,8 @@ jobs:
             triple: arm64-apple-darwin
           - name: macos-13
             triple: x86_64-apple-darwin
-          # - name: windows-latest
-          #   triple: x86_64-w64-mingw32
+          - name: windows-latest
+            triple: x86_64-w64-mingw32
 
           # stable check
 
