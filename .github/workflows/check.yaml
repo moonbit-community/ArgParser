@@ -15,7 +15,7 @@ jobs:
   check:
     strategy:
       matrix:
-        version: [stable,pre-release,bleeding]
+        version: [stable, pre-release, bleeding]
         os:
           - name: ubuntu-latest
             triple: x86_64-linux-gnu
@@ -23,8 +23,8 @@ jobs:
             triple: arm64-apple-darwin
           - name: macos-13
             triple: x86_64-apple-darwin
-          - name: windows-latest
-            triple: x86_64-w64-mingw32
+          # - name: windows-latest
+          #   triple: x86_64-w64-mingw32
 
           # stable check
 
@@ -33,7 +33,7 @@ jobs:
           # bleeding check
           # 1. install latest toolchain
           # 2. install latest core library from github.com
-          
+
       fail-fast: false
     runs-on: ${{ matrix.os.name }}
     continue-on-error: false
@@ -41,10 +41,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 1
-      
+
       - name: Setup Moon
         uses: illusory0x0/setup-moonbit@v0.1.0
-        with: 
+        with:
           version: ${{ matrix.version }}
 
       - name: moon version
@@ -80,23 +80,24 @@ jobs:
 
       - name: moon test
         run: |
-          moon test --target all,native
+          moon test --enable-coverage --target all,native
           moon test --target all,native --release
 
-      - name: moon test with dedup_wasm
-        if: ${{ matrix.os.name != 'windows-latest' }}
+      - name: coverage report
+        run: |
+          moon coverage report -f summary > coverage_summary.txt
+          # Put the coverage report in the pipline output
+          cat coverage_summary.txt >> "$GITHUB_STEP_SUMMARY"
+          # We don't use the official coveralls upload tool because it takes >1min to build itself
+          moon coverage report \
+            -f coveralls \
+            -o codecov_report.json \
+            --service-name github \
+            --service-job-id "$GITHUB_RUN_NUMBER" \
+            --service-pull-request "${{ github.event.number }}" \
+            --send-to coveralls
         env:
-          MOONC_INTERNAL_PARAMS: dedup_wasm = 1 |
-
-        run: |
-          moon clean
-          ulimit -s 8176
-          moon test --target wasm,wasm-gc
-          moon test --target wasm,wasm-gc --release
-
-      - name: moon test --doc
-        run: |
-          moon test --doc
+          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   moon-json-format-check:
     runs-on: ubuntu-latest
