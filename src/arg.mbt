@@ -79,14 +79,13 @@ pub fn parse(
   usage_msg : String,
   argv : Array[String]
 ) -> Unit {
-  fn aux {
-    ((trie : @trie.T[Spec]), help_msg), (a, b, spec, help) => {
-      let trie = trie.add(a, spec).add(b, spec)
-      let help_msg = help_msg + "  \{a}\t\{b}\t" + help + "\n"
-      (trie, help_msg)
-    }
+  let aux = fn(acc, it) {
+    let ((trie : @trie.T[Spec]), help_msg) = acc
+    let (a, b, spec, help) = it
+    let trie = trie.add(a, spec).add(b, spec)
+    let help_msg = help_msg + "  \{a}\t\{b}\t" + help + "\n"
+    (trie, help_msg)
   }
-
   let (trie, help_msg) = speclist.fold(
     aux,
     init=(@trie.empty(), usage_msg + "\n options:\n"),
