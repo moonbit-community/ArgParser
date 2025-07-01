@@ -59,16 +59,6 @@ jobs:
       - name: moon check
         run: moon check --deny-warn
 
-      - name: moon info
-        run: |
-          moon info --target wasm,wasm-gc,js,native
-          git diff --exit-code
-
-      - name: format diff
-        run: |
-          moon fmt
-          git diff --exit-code
-
       - name: Setup MSVC
         if: ${{ matrix.os.name == 'windows-latest' }}
         uses: ilammy/msvc-dev-cmd@v1
@@ -80,11 +70,39 @@ jobs:
 
       - name: moon test
         run: |
-          moon test --enable-coverage --target all,native
+          moon test --target all,native
           moon test --target all,native --release
+
+  coverage:
+    strategy:
+      matrix:
+        version: [stable]
+        os:
+          - name: ubuntu-latest
+            triple: x86_64-linux-gnu
+    runs-on: ${{ matrix.os.name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Moon
+        uses: illusory0x0/setup-moonbit@v0.1.0
+        with:
+          version: ${{ matrix.version }}
+
+      - name: moon version
+        run: |
+          moon version --all
+
+      - name: install module dependencies
+        run: |
+          moon update
+          moon install
 
       - name: coverage report
         run: |
+          moon test --enable-coverage
           moon coverage report -f summary > coverage_summary.txt
           # Put the coverage report in the pipline output
           cat coverage_summary.txt >> "$GITHUB_STEP_SUMMARY"
@@ -98,6 +116,43 @@ jobs:
             --send-to coveralls
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  check-format:
+    strategy:
+      matrix:
+        version: [stable]
+        os:
+          - name: ubuntu-latest
+            triple: x86_64-linux-gnu
+    runs-on: ${{ matrix.os.name }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Moon
+        uses: illusory0x0/setup-moonbit@v0.1.0
+        with:
+          version: ${{ matrix.version }}
+
+      - name: moon version
+        run: |
+          moon version --all
+
+      - name: install module dependencies
+        run: |
+          moon update
+          moon install
+
+      - name: moon info
+        run: |
+          moon info --target wasm,wasm-gc,js,native
+          git diff --exit-code
+
+      - name: format diff
+        run: |
+          moon fmt
+          git diff --exit-code
 
   moon-json-format-check:
     runs-on: ubuntu-latest
