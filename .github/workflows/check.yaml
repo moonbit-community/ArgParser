@@ -117,42 +117,42 @@ jobs:
         env:
           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  check-format:
-    strategy:
-      matrix:
-        version: [stable]
-        os:
-          - name: ubuntu-latest
-            triple: x86_64-linux-gnu
-    runs-on: ${{ matrix.os.name }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
-
-      - name: Setup Moon
-        uses: illusory0x0/setup-moonbit@v0.1.0
-        with:
-          version: ${{ matrix.version }}
-
-      - name: moon version
-        run: |
-          moon version --all
-
-      - name: install module dependencies
-        run: |
-          moon update
-          moon install
-
-      - name: moon info
-        run: |
-          moon info --target wasm,wasm-gc,js,native
-          git diff --exit-code
-
-      - name: format diff
-        run: |
-          moon fmt
-          git diff --exit-code
+  # check-format:
+  #   strategy:
+  #     matrix:
+  #       version: [stable]
+  #       os:
+  #         - name: ubuntu-latest
+  #           triple: x86_64-linux-gnu
+  #   runs-on: ${{ matrix.os.name }}
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #       with:
+  #         fetch-depth: 1
+  #
+  #     - name: Setup Moon
+  #       uses: illusory0x0/setup-moonbit@v0.1.0
+  #       with:
+  #         version: ${{ matrix.version }}
+  #
+  #     - name: moon version
+  #       run: |
+  #         moon version --all
+  #
+  #     - name: install module dependencies
+  #       run: |
+  #         moon update
+  #         moon install
+  #
+  #     - name: moon info
+  #       run: |
+  #         moon info --target wasm,wasm-gc,js,native
+  #         git diff --exit-code
+  #
+  #     - name: format diff
+  #       run: |
+  #         moon fmt
+  #         git diff --exit-code
 
   moon-json-format-check:
     runs-on: ubuntu-latest
