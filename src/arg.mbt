@@ -21,7 +21,7 @@ pub(all) enum Spec {
 fn interpret(
   trie : @trie.T[Spec],
   xs : Array[String],
-  fallback : (String) -> Unit
+  fallback : (String) -> Unit,
 ) -> Unit {
   loop xs[:] {
     [] => ()
@@ -77,7 +77,7 @@ pub fn parse(
   speclist : Array[(String, String, Spec, String)],
   rest : (String) -> Unit,
   usage_msg : String,
-  argv : Array[String]
+  argv : Array[String],
 ) -> Unit {
   let aux = fn(acc, it) {
     let ((trie : @trie.T[Spec]), help_msg) = acc
