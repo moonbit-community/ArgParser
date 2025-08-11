@@ -1,7 +1,10 @@
+// Generated using `moon info`, DON'T EDIT IT
 package "Yoorkin/ArgParser"
 
 // Values
 fn parse(Array[(String, String, Spec, String)], (String) -> Unit, String, Array[String]) -> Unit
+
+// Errors
 
 // Types and methods
 pub(all) enum Spec {
