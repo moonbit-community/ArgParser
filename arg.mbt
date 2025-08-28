@@ -1,4 +1,5 @@
-///| Matched option handler that used to interpret options.
+///|
+/// Matched option handler that used to interpret options.
 /// 
 ///  Unit - handle with callback  
 /// 
@@ -60,7 +61,8 @@ fn interpret(
   }
 }
 
-///| Parse argument list for CLI tools
+///|
+/// Parse argument list for CLI tools
 /// 
 /// Match `OptionName` or `LongOptionName` then interpret with `Spec` and 
 /// use `Description` to generate `-h` or `--help` options message.

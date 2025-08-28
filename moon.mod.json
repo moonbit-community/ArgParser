@@ -1,13 +1,12 @@
 {
   "name": "Yoorkin/ArgParser",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "deps": {
-    "Yoorkin/trie": "0.2.4"
+    "Yoorkin/trie": "0.2.5"
   },
   "readme": "README.md",
   "repository": "https://github.com/Yoorkin/ArgParser",
   "license": "Apache-2.0",
   "keywords": ["utils", "command line", "parser"],
-  "description": "command line argument parser",
-  "source": "src"
+  "description": "command line argument parser"
 }

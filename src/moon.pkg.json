@@ -1,6 +1,0 @@
-{
-  "import": ["Yoorkin/trie"],
-  "test-import": {
-    "Yoorkin/ArgParser": "arg"
-  }
-}
