@@ -90,7 +90,7 @@ pub fn parse(
   }
   let (trie, help_msg) = speclist.fold(
     aux,
-    init=(@trie.empty(), usage_msg + "\n options:\n"),
+    init=(@trie.Trie::empty(), usage_msg + "\n options:\n"),
   )
   let help_spec = Spec::Unit(fn() { println(help_msg) })
   let trie = trie.add("--help", help_spec).add("-h", help_spec)
