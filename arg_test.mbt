@@ -15,9 +15,8 @@ test {
     ("--search", "-s", Set_string(keyword), "search for files"),
     ("--delete", "-d", Set(delete_files), "delete listed files"),
   ]
-  let fallback = file => files.push(file)
   let argv = ["--search", ".mbt", "--delete", "file1", "file2", "-n"]
-  @ArgParser.parse(options, fallback, usage, argv)
+  let _ = try? @ArgParser.parse(options, file => files.push(file), usage, argv)
   assert_eq(verbose.val, false)
   assert_eq(keyword.val, ".mbt")
   assert_eq(files.length(), 2)
