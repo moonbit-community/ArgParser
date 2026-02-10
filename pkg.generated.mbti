@@ -2,10 +2,12 @@
 package "Yoorkin/ArgParser"
 
 // Values
-fn parse(Array[(String, String, Spec, String)], (String) -> Unit raise, String, Array[String]) -> Unit raise
+pub fn parse(Array[(String, String, Spec, String)], (String) -> Unit raise, String, Array[String]) -> Unit raise
 
 // Errors
-pub suberror ErrorMsg String
+pub suberror ErrorMsg {
+  ErrorMsg(String)
+}
 
 // Types and methods
 pub(all) enum Spec {

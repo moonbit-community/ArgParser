@@ -98,10 +98,12 @@ pub fn parse(
     aux,
     init=(Trie::empty(), usage_msg + "\n options:\n"),
   )
-  let help_spec = Spec::Unit(fn() { raise ErrorMsg(help_msg) })
+  let help_spec = Spec::Unit(() => raise ErrorMsg(help_msg))
   let trie = trie.add("--help", help_spec).add("-h", help_spec)
   interpret(trie, argv, rest)
 }
 
 ///|
-pub suberror ErrorMsg String
+pub suberror ErrorMsg {
+  ErrorMsg(String)
+}

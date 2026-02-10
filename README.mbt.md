@@ -5,15 +5,26 @@ the command-line interface.
 
 # Usage 
 
-```moonbit
+```mbt check
+///|
 using @ArgParser {parse}
+
+///|
 let verbose : Ref[Bool] = @ref.new(false)
+
+///|
 let output : Ref[String] = @ref.new("output")
+
+///|
 let files : Array[String] = []
+
+///|
 let spec : Array[(String, String, Spec, String)] = [
   ("--verbose", "-v", Set(verbose), "enable verbose message"),
   ("--output", "-o", Set_string(output), "output file name"),
 ]
+
+///|
 let usage =
   #| Simple CLI tool 
   #| usage: 
@@ -35,7 +46,7 @@ test {
 
 ArgParser will automatically generate `--help` and `-h` options. 
 
-```mbt
+```mbt check
 ///|
 test {
   let argv = ["--help"]
