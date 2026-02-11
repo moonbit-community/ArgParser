@@ -1,8 +1,8 @@
 ///|
 test {
-  let verbose : Ref[Bool] = @ref.new(true)
-  let keyword : Ref[String] = @ref.new("")
-  let delete_files : Ref[Bool] = @ref.new(false)
+  let verbose : Ref[Bool] = Ref::new(true)
+  let keyword : Ref[String] = Ref::new("")
+  let delete_files : Ref[Bool] = Ref::new(false)
   let usage =
     #| Awesome CLI tool!
     #| usage: 

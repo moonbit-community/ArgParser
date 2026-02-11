@@ -1,8 +1,8 @@
 {
   "name": "Yoorkin/ArgParser",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "deps": {
-    "Yoorkin/trie": "0.2.6"
+    "Yoorkin/trie": "0.2.10"
   },
   "readme": "README.md",
   "repository": "https://github.com/Yoorkin/ArgParser",
