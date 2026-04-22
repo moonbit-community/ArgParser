@@ -27,40 +27,42 @@ fn interpret(
   xs : Array[String],
   fallback : (String) -> Unit raise,
 ) -> Unit raise {
-  loop xs[:] {
-    [] => ()
-    [x, .. xs] =>
-      match trie.lookup(x) {
-        None => {
-          fallback(x)
-          continue xs
-        }
-        Some(spec) =>
-          match (spec, xs) {
-            (String(f), [y, .. ys]) => {
-              f(y)
-              continue ys
-            }
-            (Set_string(r), [y, .. ys]) => {
-              r.val = y
-              continue ys
-            }
-            (String(_), []) | (Set_string(_), []) =>
-              raise ErrorMsg("missing argument for \{x}")
-            (Set(r), _) => {
-              r.val = true
-              continue xs
-            }
-            (Clear(r), _) => {
-              r.val = false
-              continue xs
-            }
-            (Unit(f), _) => {
-              f()
-              continue xs
-            }
+  for remaining = xs[:] {
+    match remaining {
+      [] => break ()
+      [x, .. rest] =>
+        match trie.lookup(x) {
+          None => {
+            fallback(x)
+            continue rest
           }
-      }
+          Some(spec) =>
+            match (spec, rest) {
+              (String(f), [y, .. ys]) => {
+                f(y)
+                continue ys
+              }
+              (Set_string(r), [y, .. ys]) => {
+                r.val = y
+                continue ys
+              }
+              (String(_), []) | (Set_string(_), []) =>
+                raise ErrorMsg("missing argument for \{x}")
+              (Set(r), _) => {
+                r.val = true
+                continue rest
+              }
+              (Clear(r), _) => {
+                r.val = false
+                continue rest
+              }
+              (Unit(f), _) => {
+                f()
+                continue rest
+              }
+            }
+        }
+    }
   }
 }
 
