@@ -1,19 +1,25 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "Yoorkin/ArgParser"
 
+import {
+  "moonbitlang/core/ref",
+}
+
 // Values
-fn parse(Array[(String, String, Spec, String)], (String) -> Unit raise, String, Array[String]) -> Unit raise
+pub fn parse(Array[(String, String, Spec, String)], (String) -> Unit raise, String, Array[String]) -> Unit raise
 
 // Errors
-pub suberror ErrorMsg String
+pub suberror ErrorMsg {
+  ErrorMsg(String)
+}
 
 // Types and methods
 pub(all) enum Spec {
   Unit(() -> Unit raise)
   String((String) -> Unit raise)
-  Set_string(Ref[String])
-  Set(Ref[Bool])
-  Clear(Ref[Bool])
+  Set_string(@ref.Ref[String])
+  Set(@ref.Ref[Bool])
+  Clear(@ref.Ref[Bool])
 }
 
 // Type aliases
