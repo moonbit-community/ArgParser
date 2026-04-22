@@ -54,7 +54,7 @@ jobs:
       - name: install module dependencies
         run: |
           moon update
-          moon install
+          moon check --deny-warn
 
       - name: moon check
         run: moon check --deny-warn
@@ -98,7 +98,7 @@ jobs:
       - name: install module dependencies
         run: |
           moon update
-          moon install
+          moon check --deny-warn
 
       - name: coverage report
         run: |
@@ -142,7 +142,7 @@ jobs:
       - name: install module dependencies
         run: |
           moon update
-          moon install
+          moon check --deny-warn
 
       - name: moon info
         run: |
