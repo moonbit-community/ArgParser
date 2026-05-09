@@ -10,10 +10,10 @@ the command-line interface.
 using @ArgParser {parse}
 
 ///|
-let verbose : Ref[Bool] = Ref::new(false)
+let verbose : Ref[Bool] = Ref(false)
 
 ///|
-let output : Ref[String] = Ref::new("output")
+let output : Ref[String] = Ref("output")
 
 ///|
 let files : Array[String] = []
