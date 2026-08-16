@@ -16,7 +16,7 @@ test {
     ("--delete", "-d", Set(delete_files), "delete listed files"),
   ]
   let argv = ["--search", ".mbt", "--delete", "file1", "file2", "-n"]
-  let _ = try? @ArgParser.parse(options, file => files.push(file), usage, argv)
+  @ArgParser.parse(options, file => files.push(file), usage, argv)
   assert_eq(verbose.val, false)
   assert_eq(keyword.val, ".mbt")
   assert_eq(files.length(), 2)
