@@ -1,7 +1,4 @@
 ///|
-using @trie {type Trie}
-
-///|
 /// Matched option handler that used to interpret options.
 /// 
 ///  Unit - handle with callback  
@@ -23,7 +20,7 @@ pub(all) enum Spec {
 
 ///|
 fn interpret(
-  trie : @trie.T[Spec],
+  trie : Map[String, Spec],
   xs : Array[String],
   fallback : (String) -> Unit raise,
 ) -> Unit raise {
@@ -31,7 +28,7 @@ fn interpret(
     match remaining {
       [] => break ()
       [x, .. rest] =>
-        match trie.lookup(x) {
+        match trie.get(x) {
           None => {
             fallback(x)
             continue rest
@@ -89,19 +86,21 @@ pub fn parse(
   usage_msg : String,
   argv : Array[String],
 ) -> Unit raise {
-  let aux = fn(acc : (Trie[Spec], String), it) {
+  let aux = fn(acc : (Map[String, Spec], String), it) {
     let (trie, help_msg) = acc
     let (a, b, spec, help) = it
-    let trie = trie.add(a, spec).add(b, spec)
+    trie[a] = spec
+    trie[b] = spec
     let help_msg = help_msg + "  \{a}\t\{b}\t" + help + "\n"
     (trie, help_msg)
   }
   let (trie, help_msg) = speclist.fold(
     aux,
-    init=(Trie::empty(), usage_msg + "\n options:\n"),
+    init=(Map([]), usage_msg + "\n options:\n"),
   )
   let help_spec = Spec::Unit(() => raise ErrorMsg(help_msg))
-  let trie = trie.add("--help", help_spec).add("-h", help_spec)
+  trie["--help"] = help_spec
+  trie["-h"] = help_spec
   interpret(trie, argv, rest)
 }
 
